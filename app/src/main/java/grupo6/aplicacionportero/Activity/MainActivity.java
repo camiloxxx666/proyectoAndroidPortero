@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity
                     editor.putString("ci", ci);
                     editor.putString("pass", password);
                     editor.commit();
-                    finish();
 
                     final String tenant = Util.getProperty("tenant.name", getApplicationContext());
                     String ip = settings.getString("ip", "");

@@ -3,7 +3,8 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context="grupo6.aplicacionportero.Fragment.FragmentScanner"
-android:background="#1a242f">
+android:background="#fff"
+android:tag="scannerFragment">
 
 <TextView
     android:id="@+id/resultado"
@@ -13,7 +14,7 @@ android:background="#1a242f">
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="20dp"
-    android:textColor="#FFF"
+    android:textColor="#1a242f"
     android:text="Enfoque la camara en el Codigo QR"/>
 
 <SurfaceView

@@ -32,6 +32,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +46,7 @@ public class FragmentScanner extends Fragment
     BarcodeDetector barcodeDetector;
     CameraSource cameraSource;
     final int RequestCameraPermissionID = 1001;
+    String idEspectaculo;
 
     private OnFragmentInteractionListener mListener;
 
@@ -76,8 +78,15 @@ public class FragmentScanner extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_scanner, container, false);
 
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            idEspectaculo = bundle.getString("idEspectaculo");
+        }
+
         cameraPreview = (SurfaceView) view.findViewById(R.id.cameraPreview);
         resultado = (TextView) view.findViewById(R.id.resultado);
+
+
 
         barcodeDetector = new BarcodeDetector.Builder(getActivity())
                 .setBarcodeFormats(Barcode.QR_CODE)
@@ -139,10 +148,15 @@ public class FragmentScanner extends Fragment
                                 SharedPreferences settings = getActivity().getSharedPreferences(Util.PREFS_NAME, Context.MODE_PRIVATE);
                                 String ip = settings.getString("ip", "");
                                 String puerto = settings.getString("puerto", "");
+                                String cedula = settings.getString("ci", "");
                                 String qr = codigosQR.valueAt(0).displayValue;
+
+                                //Escapeo la la info del QR para mandar en la url
+                                String qrEscapeado = URLEncoder.encode(qr, "utf-8");
+
                                 RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                                 StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                                        "http://"+ip+":"+puerto+"/verificarCodigoQR/"+ "?email="+"&qr="+qr,
+                                        "http://"+ip+":"+puerto+"/verificarCodigoQR/"+ "?cedula="+cedula+"&qr="+qrEscapeado+"&idEspectaculo=" +idEspectaculo,
                                         new Response.Listener<String>() {
                                             @Override
                                             public void onResponse(String response) {
@@ -160,7 +174,8 @@ public class FragmentScanner extends Fragment
                                         }, new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-
+                                        resultado.setText("Codigo Incorrecto");
+                                        resultado.setTextColor(Color.RED);
                                     }
                                 }){
                                     @Override
@@ -211,6 +226,7 @@ public class FragmentScanner extends Fragment
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
 
     @Override
     public void onDetach() {

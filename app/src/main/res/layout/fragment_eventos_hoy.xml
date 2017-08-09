@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
     tools:context="grupo6.aplicacionportero.Fragment.FragmentEventosHoy">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/lvEspectaculos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:divider="#2c3e50"
+        android:dividerHeight="4px"/>
 
 </FrameLayout>
